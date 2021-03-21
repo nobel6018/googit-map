@@ -1,5 +1,6 @@
 package com.cococloudy.magnolia.controller
 
+import com.cococloudy.magnolia.KeywordAndCountDTO
 import com.cococloudy.magnolia.PlaceSearchHistoryDTO
 import com.cococloudy.magnolia.extractAccountId
 import com.cococloudy.magnolia.service.PlaceSearchHistoryService
@@ -26,5 +27,14 @@ class PlaceSearchHistoryController {
         val myPlaceSearchHistories = placeSearchHistoryService.getPlaceSearchHistories(accountId)
 
         return ResponseEntity.ok(myPlaceSearchHistories)
+    }
+
+    @GetMapping("/placeSearch/top10")
+    fun getTop10PlaceSearchHistories(
+        request: SecurityContextHolderAwareRequestWrapper
+    ): ResponseEntity<List<KeywordAndCountDTO>> {
+        val frequentPlaceSearchKeywords = placeSearchHistoryService.getFrequentPlaceSearchKeywords(10)
+
+        return ResponseEntity.ok(frequentPlaceSearchKeywords)
     }
 }

@@ -62,3 +62,8 @@ data class NaverLocalApiResponseDTO(
     val display: Long,
     val items: List<NaverPlaceDTO>
 )
+
+data class KeywordAndCountDTO(
+    val keyword: String,
+    val count: Long
+)

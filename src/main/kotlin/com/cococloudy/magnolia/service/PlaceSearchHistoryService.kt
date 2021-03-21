@@ -1,5 +1,6 @@
 package com.cococloudy.magnolia.service
 
+import com.cococloudy.magnolia.KeywordAndCountDTO
 import com.cococloudy.magnolia.PlaceSearchHistoryDTO
 import com.cococloudy.magnolia.PlaceSearchHistoryRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,5 +16,9 @@ class PlaceSearchHistoryService {
         val placeSearchHistories = placeSearchHistoryRepository.findAllByAccountIdOrderByIdDesc(accountId)
 
         return placeSearchHistories.map { it.toDTO() }
+    }
+
+    fun getFrequentPlaceSearchKeywords(limit: Long): List<KeywordAndCountDTO> {
+        return placeSearchHistoryRepository.findTopNByFrequencyOrderByFrequency(limit)
     }
 }
