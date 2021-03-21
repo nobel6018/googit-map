@@ -1,12 +1,14 @@
 package com.cococloudy.magnolia
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategy
+import com.fasterxml.jackson.databind.annotation.JsonNaming
 import java.time.OffsetDateTime
 
 data class AccountDTO(
-    val id: Long? = null,
+    val id: Long?,
     val accountId: String,
-    val createdAt: OffsetDateTime = OffsetDateTime.now(),
-    val updatedAt: OffsetDateTime? = null,
+    val createdAt: OffsetDateTime,
+    val updatedAt: OffsetDateTime?,
 )
 
 data class AuthInfoDTO(
@@ -25,4 +27,26 @@ data class RefreshTokenDTO(
 data class AccessAndRefreshTokenDTO(
     val accessToken: String,
     val refreshToken: String
+)
+
+data class SearchHistoryDTO(
+    val id: Long?,
+    val accountId: Long,
+    val keyword: String,
+    val createdAt: OffsetDateTime,
+    val updatedAt: OffsetDateTime?,
+)
+
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy::class)
+data class KakaoLocalApiResponseDTO(
+    val documents: List<KakaoPlaceDTO>,
+    val meta: KakaoPlaceMeta
+)
+
+data class NaverLocalApiResponseDTO(
+    val lastBuildDate: String,
+    val total: Long,
+    val start: Long,
+    val display: Long,
+    val items: List<NaverPlaceDTO>
 )

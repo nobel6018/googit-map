@@ -18,3 +18,14 @@ security:
     prefix: "Bearer "
     expiration: 900
     refreshTokenExpiration: 1209600
+
+kakao:
+  restApiKey: c338003d85e598b4a1d995e8deb3875a
+  localApi:
+    url: https://dapi.kakao.com/v2/local/search/keyword.json
+
+naver:
+  clientId: kx0ofawL9pR02afxlegj
+  clientSecret: DmWmsRITJq
+  localApi:
+    url: https://openapi.naver.com/v1/search/local.json

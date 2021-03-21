@@ -7,3 +7,6 @@ import org.springframework.stereotype.Repository
 interface AccountRepository : CrudRepository<Account, Long> {
     fun findByAccountId(accountId: String): Account?
 }
+
+@Repository
+interface SearchHistoryRepository : CrudRepository<SearchHistory, Long>

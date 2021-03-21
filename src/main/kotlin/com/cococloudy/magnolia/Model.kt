@@ -26,3 +26,20 @@ enum class Role {
     USER, ADMIN
 }
 
+@Entity
+data class SearchHistory(
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long? = null,
+    val accountId: Long,  // fk (not to constraint fk, deal with logic)
+    val keyword: String,
+    val createdAt: OffsetDateTime = OffsetDateTime.now(),
+    val updatedAt: OffsetDateTime? = null,
+) {
+    fun toDTO() = SearchHistoryDTO(
+        id = id,
+        accountId = accountId,
+        keyword = keyword,
+        createdAt = createdAt,
+        updatedAt = updatedAt,
+    )
+}
