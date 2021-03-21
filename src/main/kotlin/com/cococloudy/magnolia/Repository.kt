@@ -9,4 +9,6 @@ interface AccountRepository : CrudRepository<Account, Long> {
 }
 
 @Repository
-interface PlaceSearchHistoryRepository : CrudRepository<PlaceSearchHistory, Long>
+interface PlaceSearchHistoryRepository : CrudRepository<PlaceSearchHistory, Long> {
+    fun findAllByAccountIdOrderByIdDesc(accountId: Long): List<PlaceSearchHistory>
+}
