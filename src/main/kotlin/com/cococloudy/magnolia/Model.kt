@@ -13,7 +13,14 @@ data class Account(
     val password: String,
     val createdAt: OffsetDateTime = OffsetDateTime.now(),
     val updatedAt: OffsetDateTime? = null,
-)
+) {
+    fun toDTO() = AccountDTO(
+        id = id,
+        accountId = accountId,
+        createdAt = createdAt,
+        updatedAt = updatedAt,
+    )
+}
 
 enum class Role {
     USER, ADMIN
