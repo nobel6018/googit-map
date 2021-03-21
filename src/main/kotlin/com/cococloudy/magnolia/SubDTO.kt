@@ -36,7 +36,7 @@ data class KakaoSameNameDTO(
 
 data class NaverPlaceDTO(
     val title: String,
-    val link: String?,
+    val link: String,
     val category: String,
     val description: String,
     val telephone: String,

@@ -27,7 +27,7 @@ enum class Role {
 }
 
 @Entity
-data class SearchHistory(
+data class PlaceSearchHistory(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
     val accountId: Long,  // fk (not to constraint fk, deal with logic)
@@ -35,7 +35,7 @@ data class SearchHistory(
     val createdAt: OffsetDateTime = OffsetDateTime.now(),
     val updatedAt: OffsetDateTime? = null,
 ) {
-    fun toDTO() = SearchHistoryDTO(
+    fun toDTO() = PlaceSearchHistoryDTO(
         id = id,
         accountId = accountId,
         keyword = keyword,

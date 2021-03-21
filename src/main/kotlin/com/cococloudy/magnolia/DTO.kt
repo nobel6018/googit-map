@@ -29,12 +29,24 @@ data class AccessAndRefreshTokenDTO(
     val refreshToken: String
 )
 
-data class SearchHistoryDTO(
+data class PlaceSearchHistoryDTO(
     val id: Long?,
     val accountId: Long,
     val keyword: String,
     val createdAt: OffsetDateTime,
     val updatedAt: OffsetDateTime?,
+)
+
+data class PlaceSearchResultDTO(
+    val places: List<PlaceDTO>,
+    val totalCount: Int,
+)
+
+data class PlaceDTO(
+    val placeName: String,
+    val phone: String,
+    val roadAddressName: String,
+    val placeUrl: String,
 )
 
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy::class)

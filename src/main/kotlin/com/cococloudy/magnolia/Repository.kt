@@ -9,4 +9,4 @@ interface AccountRepository : CrudRepository<Account, Long> {
 }
 
 @Repository
-interface SearchHistoryRepository : CrudRepository<SearchHistory, Long>
+interface PlaceSearchHistoryRepository : CrudRepository<PlaceSearchHistory, Long>
