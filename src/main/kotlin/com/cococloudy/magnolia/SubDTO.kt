@@ -35,7 +35,7 @@ data class KakaoSameNameDTO(
 )
 
 data class NaverPlaceDTO(
-    val title: String,
+    var title: String,
     val link: String,
     val category: String,
     val description: String,

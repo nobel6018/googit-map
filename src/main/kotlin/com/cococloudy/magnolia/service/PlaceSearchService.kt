@@ -79,9 +79,9 @@ class PlaceSearchService {
                     matched = true
                     break
                 }
-                if (!matched) {
-                    tempPlaceNames.add(kakaoPlace)
-                }
+            }
+            if (!matched) {
+                tempPlaceNames.add(kakaoPlace)
             }
         }
 
@@ -140,6 +140,9 @@ class PlaceSearchService {
             throw WrongRequestException("Naver Local API call failed, response: ${response.body!!.string()}")
         }
 
-        return objectMapper.readValue(response.body!!.string())
+        val naverLocalApiResponse = objectMapper.readValue<NaverLocalApiResponseDTO>(response.body!!.string())
+        naverLocalApiResponse.items.forEach { it.title = it.title.replace("<b>", "").replace("</b>", "") }
+
+        return naverLocalApiResponse
     }
 }
