@@ -1,6 +1,7 @@
 package com.cococloudy.magnolia
 
-import org.springframework.data.jpa.repository.Query
+import com.querydsl.core.Tuple
+import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 
@@ -12,10 +13,21 @@ interface AccountRepository : CrudRepository<Account, Long> {
 @Repository
 interface PlaceSearchHistoryRepository : CrudRepository<PlaceSearchHistory, Long> {
     fun findAllByAccountIdOrderByIdDesc(accountId: Long): List<PlaceSearchHistory>
+}
 
-    @Query(
-        "SELECT keyword, count(*) as count FROM place_search_history GROUP BY keyword ORDER BY count DESC LIMIT ?1 ;",
-        nativeQuery = true
-    )
-    fun findTopNByFrequencyOrderByFrequency(limit: Long): List<KeywordAndCountDTO>
+@Repository
+class QPlaceSearchHistoryRepository(
+    val query: JPAQueryFactory
+) {
+    private val qPlaceSearchHistory = QPlaceSearchHistory.placeSearchHistory
+
+    fun findKeywordAndCount(limit: Long): List<Tuple> {
+        return query
+            .select(qPlaceSearchHistory.keyword, qPlaceSearchHistory.keyword.count())
+            .from(qPlaceSearchHistory)
+            .groupBy(qPlaceSearchHistory.keyword)
+            .orderBy(qPlaceSearchHistory.keyword.count().desc())
+            .limit(limit)
+            .fetch()
+    }
 }
