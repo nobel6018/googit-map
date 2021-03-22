@@ -1,5 +1,6 @@
 package com.cococloudy.magnolia.config
 
+import com.querydsl.jpa.impl.JPAQueryFactory
 import io.swagger.v3.oas.models.Components
 import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.info.Info
@@ -11,6 +12,8 @@ import org.springframework.context.annotation.Configuration
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.annotation.PostConstruct
+import javax.persistence.EntityManager
+import javax.persistence.PersistenceContext
 
 @Configuration
 class Config {
@@ -25,6 +28,15 @@ class Config {
         return OkHttpClient.Builder()
             .readTimeout(10, TimeUnit.SECONDS)
             .build()
+    }
+
+    @Configuration
+    class QueryDslConfiguration(
+        @PersistenceContext
+        val entityManager: EntityManager
+    ) {
+        @Bean
+        fun jpaQueryFactory() = JPAQueryFactory(entityManager)
     }
 
     private val authorization = "Authorization"

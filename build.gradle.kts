@@ -10,6 +10,7 @@ plugins {
     kotlin("plugin.jpa") version kotlinVersion
     kotlin("plugin.noarg") version kotlinVersion
     kotlin("plugin.allopen") version kotlinVersion
+    kotlin("kapt") version kotlinVersion
 }
 
 group = "com.cococloudy"
@@ -39,6 +40,12 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.9.0")
     implementation("org.springdoc:springdoc-openapi-ui:1.5.6")
     implementation("org.springdoc:springdoc-openapi-kotlin:1.5.6")
+
+    val querydslVersion = "4.4.0"
+    implementation("com.querydsl:querydsl-jpa:$querydslVersion")
+    kapt("com.querydsl:querydsl-apt:$querydslVersion:jpa")
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+    annotationProcessor(group = "com.querydsl", name = "querydsl-apt", classifier = "jpa")
 }
 
 tasks.withType<KotlinCompile> {
@@ -50,4 +57,8 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+sourceSets["main"].withConvention(org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet::class) {
+    kotlin.srcDir("$buildDir/generated/source/kapt/main")
 }
