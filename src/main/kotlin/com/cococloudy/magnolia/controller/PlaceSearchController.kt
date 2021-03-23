@@ -23,11 +23,12 @@ class PlaceSearchController {
     @GetMapping("/place")
     fun searchPlace(
         @RequestParam keyword: String,
+        @RequestParam(required = false) forceRefresh: Boolean?,
         request: SecurityContextHolderAwareRequestWrapper
     ): ResponseEntity<PlaceSearchResultDTO> {
         val accountId = request.extractAccountId()
 
-        val placeSearchResult = placeSearchService.searchPlaceWithLogging(accountId, keyword)
+        val placeSearchResult = placeSearchService.searchPlaceWithLogging(accountId, keyword, forceRefresh ?: false)
 
         return ResponseEntity.ok(placeSearchResult)
     }

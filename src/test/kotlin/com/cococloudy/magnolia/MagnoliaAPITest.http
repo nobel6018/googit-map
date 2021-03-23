@@ -6,14 +6,22 @@ Accept: application/json
 GET http://localhost:8080/api/v1/account/isAccountIdExist?accountId=googit
 Accept: application/json
 
+###
+POST http://localhost:8080/api/v1/account/signUp
+Content-Type: application/json
+
+{
+  "accountId": "googit7",
+  "password": "weakpassword"
+}
 
 ###
 POST http://localhost:8080/api/v1/account/signUp
 Content-Type: application/json
 
 {
-  "accountId": "googit",
-  "password": "randomPass12!@"
+  "accountId": "googit6",
+  "password": "strongPassword12!@"
 }
 
 > {% client.global.set("accessToken", response.body.accessToken);
@@ -26,8 +34,8 @@ POST http://localhost:8080/api/v1/account/login
 Content-Type: application/json
 
 {
-  "accountId": "googit",
-  "password": "randomPass12!@"
+  "accountId": "googit6",
+  "password": "strongPassword12!@"
 }
 
 > {% client.global.set("accessToken", response.body.accessToken);
@@ -42,6 +50,13 @@ Content-Type: application/json
 {
   "refreshToken": "{{refreshToken}}"
 }
+
+> {% client.global.set("accessToken", response.body.accessToken);
+if (response.body.refreshToken != null) {
+  client.global.set("refreshToken", response.body.refreshToken);
+}
+%}
+
 
 ###
 GET http://localhost:8080/api/v1/search/place?keyword=은행
