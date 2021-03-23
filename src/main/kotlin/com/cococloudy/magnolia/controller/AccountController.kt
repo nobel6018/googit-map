@@ -36,6 +36,7 @@ class AccountController {
         if (accountService.isAccountIdExist(authInfo.accountId)) {
             throw WrongRequestException("AccountId ${authInfo.accountId} already exists")
         }
+        accountService.throwIfPasswordIsWeak(authInfo.password)
 
         val createdAccount = accountService.createAccount(authInfo.accountId, authInfo.password, Role.USER)
 

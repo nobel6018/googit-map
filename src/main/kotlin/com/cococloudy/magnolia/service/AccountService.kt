@@ -48,4 +48,42 @@ class AccountService {
             jwtService.createRefreshToken(account.id)
         )
     }
+
+    fun throwIfPasswordIsWeak(password: String) {
+        if (password.length < 8 || password.length > 32) {
+            throw WrongRequestException("Password length should be between 8 and 32")
+        }
+
+        var hasAlphabet = false
+        var hasNumber = false
+        var hasAsciiSpecialChar = false
+
+        val asciiSpecialChars = """!"#$%&'()*+,-.\:;<=>?@[\]^_`{|}~"""
+
+        for (char in password) {
+            if (char in 'a'..'z' || char in 'A'..'Z') {
+                hasAlphabet = true
+                continue
+            }
+            if (char in '0'..'9') {
+                hasNumber = true
+                continue
+            }
+            if (char in asciiSpecialChars) {
+                hasAsciiSpecialChar = true
+                continue
+            }
+            throw WrongRequestException("Password should consist of ascii chars")
+        }
+
+        if (!hasAlphabet) {
+            throw WrongRequestException("Password should contain at least one alphabet")
+        }
+        if (!hasNumber) {
+            throw WrongRequestException("Password should contain at least one number")
+        }
+        if (!hasAsciiSpecialChar) {
+            throw WrongRequestException("Password should contain at least one ascii special char")
+        }
+    }
 }
