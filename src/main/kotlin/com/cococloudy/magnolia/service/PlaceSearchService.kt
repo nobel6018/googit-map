@@ -46,10 +46,10 @@ class PlaceSearchService {
     fun searchPlaceWithLogging(accountId: Long, keyword: String): PlaceSearchResultDTO {
         createPlaceSearchHistory(accountId, keyword)
 
-        val cachedPlaces = getPlacesFromCache(keyword)
+        val cachedPlaceSearchResult = getPlaceSearchResultFromCache(keyword)
 
-        return if (cachedPlaces.totalCount > 0) {
-            cachedPlaces
+        return if (cachedPlaceSearchResult.totalCount > 0) {
+            cachedPlaceSearchResult
         } else {
             searchPlacesAndCacheResults(keyword)
         }
@@ -65,7 +65,7 @@ class PlaceSearchService {
         placeSearchHistoryRepository.save(searchHistory)
     }
 
-    fun getPlacesFromCache(keyword: String): PlaceSearchResultDTO {
+    private fun getPlaceSearchResultFromCache(keyword: String): PlaceSearchResultDTO {
         val placeSearchCaches = placeSearchCacheRepository.findAllByKeywordAndCreatedEpochTimeAfter(
             keyword,
             System.currentTimeMillis() - CACHE_VALID_MILLISECOND
@@ -105,29 +105,38 @@ class PlaceSearchService {
     @Transactional
     fun searchPlacesAndCacheResults(keyword: String): PlaceSearchResultDTO {
         val placeSearchResult = searchPlaces(keyword)
-
-        // Todo: Cache와 받아온 데이터가 다른 경우에만 캐시 작성하고, 아니면 createdEpochTime = System.currentTimeMillis()
         val places = placeSearchResult.places
 
-        val nodeIds = (1..15).map { randomString() }
-        val createdEpochTime = System.currentTimeMillis()
-        val placeSearchCaches = places.mapIndexed { index, place ->
-            val isLastNode = places.size == (index + 1)
-            val nextNodeId = if (isLastNode) "" else nodeIds[index + 1]
+        val placeSearchCaches = placeSearchCacheRepository.findAllByKeyword(keyword)
+        val cachedPlaces = sortPlaceSearchCaches(placeSearchCaches).map { it.toPlaceDTO() }
 
-            PlaceSearchCache(
-                initial = (index == 0),
-                nodeId = nodeIds[index],
-                nextNodeId = nextNodeId,
-                keyword = keyword,
-                placeName = place.placeName,
-                phone = place.phone,
-                roadAddressName = place.roadAddressName,
-                placeUrl = place.placeUrl,
-                createdEpochTime = createdEpochTime,
-            )
+        if (places == cachedPlaces) {
+            val createdEpochTime = System.currentTimeMillis()
+            placeSearchCaches.forEach { it.createdEpochTime = createdEpochTime }
+            placeSearchCacheRepository.saveAll(placeSearchCaches)
+        } else {
+            placeSearchCacheRepository.deleteAllByKeyword(keyword)
+
+            val nodeIds = (1..15).map { randomString() }
+            val createdEpochTime = System.currentTimeMillis()
+            val creatingPlaceSearchCaches = places.mapIndexed { index, place ->
+                val isLastNode = places.size == (index + 1)
+                val nextNodeId = if (isLastNode) "" else nodeIds[index + 1]
+
+                PlaceSearchCache(
+                    initial = (index == 0),
+                    nodeId = nodeIds[index],
+                    nextNodeId = nextNodeId,
+                    keyword = keyword,
+                    placeName = place.placeName,
+                    phone = place.phone,
+                    roadAddressName = place.roadAddressName,
+                    placeUrl = place.placeUrl,
+                    createdEpochTime = createdEpochTime,
+                )
+            }
+            placeSearchCacheRepository.saveAll(creatingPlaceSearchCaches)
         }
-        placeSearchCacheRepository.saveAll(placeSearchCaches)
 
         return placeSearchResult
     }

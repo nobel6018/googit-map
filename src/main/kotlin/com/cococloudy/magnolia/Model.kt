@@ -56,7 +56,7 @@ data class PlaceSearchCache(
     val phone: String,
     val roadAddressName: String,
     val placeUrl: String,
-    val createdEpochTime: Long = System.currentTimeMillis(),  // Cache is internal logic. Works like TTL
+    var createdEpochTime: Long = System.currentTimeMillis(),  // Cache is internal logic. Works like TTL
 ) {
     fun toPlaceDTO() = PlaceDTO(
         placeName = placeName,
