@@ -1,0 +1,58 @@
+GET http://localhost:8080/api/v1/health/ping
+Accept: application/json
+
+
+###
+GET http://localhost:8080/api/v1/account/isAccountIdExist?accountId=googit
+Accept: application/json
+
+
+###
+POST http://localhost:8080/api/v1/account/signUp
+Content-Type: application/json
+
+{
+  "accountId": "googit",
+  "password": "randomPass12!@"
+}
+
+> {% client.global.set("accessToken", response.body.accessToken);
+client.global.set("refreshToken", response.body.refreshToken);
+%}
+
+
+###
+POST http://localhost:8080/api/v1/account/login
+Content-Type: application/json
+
+{
+  "accountId": "googit",
+  "password": "randomPass12!@"
+}
+
+> {% client.global.set("accessToken", response.body.accessToken);
+client.global.set("refreshToken", response.body.refreshToken);
+%}
+
+
+###
+POST http://localhost:8080/api/v1/auth/refreshToken
+Content-Type: application/json
+
+{
+  "refreshToken": "{{refreshToken}}"
+}
+
+###
+GET http://localhost:8080/api/v1/search/place?keyword=은행
+Authorization: Bearer {{accessToken}}
+
+
+###
+GET http://localhost:8080/api/v1/histories/me/placeSearch
+Authorization: Bearer {{accessToken}}
+
+
+###
+GET http://localhost:8080/api/v1/histories/placeSearch/top10
+Authorization: Bearer {{accessToken}}
