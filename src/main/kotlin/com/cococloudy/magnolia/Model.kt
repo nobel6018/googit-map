@@ -43,3 +43,25 @@ data class PlaceSearchHistory(
         updatedAt = updatedAt,
     )
 }
+
+@Entity
+data class PlaceSearchCache(
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long? = null,
+    val initial: Boolean,
+    val nodeId: String,
+    val nextNodeId: String,  // if end node, ""
+    val keyword: String,
+    val placeName: String,
+    val phone: String,
+    val roadAddressName: String,
+    val placeUrl: String,
+    val createdEpochTime: Long = System.currentTimeMillis(),  // Cache is internal logic. Works like TTL
+) {
+    fun toPlaceDTO() = PlaceDTO(
+        placeName = placeName,
+        phone = phone,
+        roadAddressName = roadAddressName,
+        placeUrl = placeUrl,
+    )
+}

@@ -32,16 +32,27 @@ class PlaceSearchService {
     private lateinit var placeSearchHistoryRepository: PlaceSearchHistoryRepository
 
     @Autowired
+    private lateinit var placeSearchCacheRepository: PlaceSearchCacheRepository
+
+    @Autowired
     private lateinit var okHttpClient: OkHttpClient
 
     @Autowired
     private lateinit var objectMapper: ObjectMapper
 
+    val CACHE_VALID_MILLISECOND = 86_400_000L  // 24 hour
+
     @Transactional
     fun searchPlaceWithLogging(accountId: Long, keyword: String): PlaceSearchResultDTO {
         createPlaceSearchHistory(accountId, keyword)
 
-        return searchPlace(keyword)
+        val cachedPlaces = getPlacesFromCache(keyword)
+
+        return if (cachedPlaces.totalCount > 0) {
+            cachedPlaces
+        } else {
+            searchPlacesAndCacheResults(keyword)
+        }
     }
 
     @Transactional
@@ -54,7 +65,74 @@ class PlaceSearchService {
         placeSearchHistoryRepository.save(searchHistory)
     }
 
-    private fun searchPlace(keyword: String): PlaceSearchResultDTO {
+    fun getPlacesFromCache(keyword: String): PlaceSearchResultDTO {
+        val placeSearchCaches = placeSearchCacheRepository.findAllByKeywordAndCreatedEpochTimeAfter(
+            keyword,
+            System.currentTimeMillis() - CACHE_VALID_MILLISECOND
+        )
+
+        if (placeSearchCaches.isEmpty()) {
+            return PlaceSearchResultDTO(places = listOf(), totalCount = 0)
+        }
+
+        val sortedPlaceCaches = sortPlaceSearchCaches(placeSearchCaches)
+        val places = sortedPlaceCaches.map { it.toPlaceDTO() }
+
+        return PlaceSearchResultDTO(
+            places = places,
+            totalCount = places.size
+        )
+    }
+
+    private fun sortPlaceSearchCaches(placeSearchCaches: List<PlaceSearchCache>): List<PlaceSearchCache> {
+        val sortedPlaceSearchCaches = mutableListOf<PlaceSearchCache>()
+        var placeSearchCache = placeSearchCaches.find { it.initial == true }
+            ?: return listOf()
+
+        sortedPlaceSearchCaches.add(placeSearchCache)
+
+        if (placeSearchCaches.size > 1) {
+            for (i in 2..placeSearchCaches.size) {
+                placeSearchCache = placeSearchCaches.find { it.nodeId == placeSearchCache.nextNodeId }
+                    ?: throw NotFoundException("PlaceSearchCache", "nextNodeId: ${placeSearchCache.nextNodeId}")
+                sortedPlaceSearchCaches.add(placeSearchCache)
+            }
+        }
+
+        return sortedPlaceSearchCaches
+    }
+
+    @Transactional
+    fun searchPlacesAndCacheResults(keyword: String): PlaceSearchResultDTO {
+        val placeSearchResult = searchPlaces(keyword)
+
+        // Todo: Cache와 받아온 데이터가 다른 경우에만 캐시 작성하고, 아니면 createdEpochTime = System.currentTimeMillis()
+        val places = placeSearchResult.places
+
+        val nodeIds = (1..15).map { randomString() }
+        val createdEpochTime = System.currentTimeMillis()
+        val placeSearchCaches = places.mapIndexed { index, place ->
+            val isLastNode = places.size == (index + 1)
+            val nextNodeId = if (isLastNode) "" else nodeIds[index + 1]
+
+            PlaceSearchCache(
+                initial = (index == 0),
+                nodeId = nodeIds[index],
+                nextNodeId = nextNodeId,
+                keyword = keyword,
+                placeName = place.placeName,
+                phone = place.phone,
+                roadAddressName = place.roadAddressName,
+                placeUrl = place.placeUrl,
+                createdEpochTime = createdEpochTime,
+            )
+        }
+        placeSearchCacheRepository.saveAll(placeSearchCaches)
+
+        return placeSearchResult
+    }
+
+    private fun searchPlaces(keyword: String): PlaceSearchResultDTO {
         val kakaoPlaces = callKakaoLocalApi(keyword).documents
         val naverPlaces = callNaverLocalApi(keyword).items.toMutableList()
 

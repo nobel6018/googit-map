@@ -31,3 +31,8 @@ class QPlaceSearchHistoryRepository(
             .fetch()
     }
 }
+
+@Repository
+interface PlaceSearchCacheRepository : CrudRepository<PlaceSearchCache, Long> {
+    fun findAllByKeywordAndCreatedEpochTimeAfter(keyword: String, createdEpochTime: Long): List<PlaceSearchCache>
+}
