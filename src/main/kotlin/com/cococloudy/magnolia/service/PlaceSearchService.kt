@@ -43,8 +43,12 @@ class PlaceSearchService {
     val CACHE_VALID_MILLISECOND = 86_400_000L  // 24 hour
 
     @Transactional
-    fun searchPlaceWithLogging(accountId: Long, keyword: String): PlaceSearchResultDTO {
+    fun searchPlaceWithLogging(accountId: Long, keyword: String, forceRefresh: Boolean): PlaceSearchResultDTO {
         createPlaceSearchHistory(accountId, keyword)
+
+        if (forceRefresh) {
+            return searchPlacesAndCacheResults(keyword)
+        }
 
         val cachedPlaceSearchResult = getPlaceSearchResultFromCache(keyword)
 
