@@ -1,12 +1,13 @@
+### 서버 상태 체크 API
 GET http://localhost:8080/api/v1/health/ping
 Accept: application/json
 
 
-###
+### 아이디 중복 확인 API
 GET http://localhost:8080/api/v1/account/isAccountIdExist?accountId=googit
 Accept: application/json
 
-###
+### 회원가입 API (취약한 패스워드 -> HTTP 400 에러)
 POST http://localhost:8080/api/v1/account/signUp
 Content-Type: application/json
 
@@ -15,7 +16,7 @@ Content-Type: application/json
   "password": "weakpassword"
 }
 
-###
+### 회원가입 API (HTTP 200)
 POST http://localhost:8080/api/v1/account/signUp
 Content-Type: application/json
 
@@ -29,7 +30,7 @@ client.global.set("refreshToken", response.body.refreshToken);
 %}
 
 
-###
+### 로그인 API
 POST http://localhost:8080/api/v1/account/login
 Content-Type: application/json
 
@@ -43,7 +44,7 @@ client.global.set("refreshToken", response.body.refreshToken);
 %}
 
 
-###
+### 리프레쉬 토큰으로 토큰 갱신 API
 POST http://localhost:8080/api/v1/auth/refreshToken
 Content-Type: application/json
 
@@ -58,16 +59,21 @@ if (response.body.refreshToken != null) {
 %}
 
 
-###
+### 장소 검색 API
 GET http://localhost:8080/api/v1/search/place?keyword=은행
 Authorization: Bearer {{accessToken}}
 
 
-###
+### 장소 검색 API with forceRefresh parameter
+GET http://localhost:8080/api/v1/search/place?keyword=은행&forceRefresh=true
+Authorization: Bearer {{accessToken}}
+
+
+### 내 검색 히스토리 API
 GET http://localhost:8080/api/v1/histories/me/placeSearch
 Authorization: Bearer {{accessToken}}
 
 
-###
+### 인기 키워드 목록 API
 GET http://localhost:8080/api/v1/histories/placeSearch/top10
 Authorization: Bearer {{accessToken}}
