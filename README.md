@@ -5,6 +5,14 @@ main branch의 설정환경은 production용 설정이 아닙니다 (실제 서�
 
 main branch의 설정은 dev branch의 설정과 동일합니다
 
+## API 테스트
+
+- src/test/kotlin/com/cococloudy/magnolia/MagnoliaAPITest.http
+- 위의 http request 파일에서 API를 테스트 해 볼 수 있습니다
+- Spring Boot 서버를 실행하면 H2 데이터베이스도 함께 실행됩니다 (관련설정 :
+  src/main/kotlin/com/cococloudy/magnolia/config/H2ServerConfiguration.kt)
+- 예시 더미 데이터는 data/magnolia.mv.db에 함께 저장되어 있습니다
+
 ## 사용한 외부라이브러리
 
 - jsonwebtoken : Json Web Token(JWT)를 통해 회원가입/로그인 기능을 구현하였습니다 (https://github.com/jwtk/jjwt)

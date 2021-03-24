@@ -1,11 +1,12 @@
 package com.cococloudy.magnolia.service
 
 import com.cococloudy.magnolia.KeywordAndCountDTO
-import com.cococloudy.magnolia.PlaceSearchHistoryDTO
+import com.cococloudy.magnolia.KeywordAndLastSearchedAtDTO
 import com.cococloudy.magnolia.PlaceSearchHistoryRepository
 import com.cococloudy.magnolia.QPlaceSearchHistoryRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import java.time.OffsetDateTime
 
 @Component
 class PlaceSearchHistoryService {
@@ -16,10 +17,20 @@ class PlaceSearchHistoryService {
     @Autowired
     private lateinit var qPlaceSearchHistoryRepository: QPlaceSearchHistoryRepository
 
-    fun getPlaceSearchHistories(accountId: Long): List<PlaceSearchHistoryDTO> {
-        val placeSearchHistories = placeSearchHistoryRepository.findAllByAccountIdOrderByIdDesc(accountId)
+    fun getPlaceSearchHistories(accountId: Long, uniqueKeyword: Boolean): List<Any> {
+        return if (!uniqueKeyword) {
+            val placeSearchHistories = placeSearchHistoryRepository.findAllByAccountIdOrderByIdDesc(accountId)
 
-        return placeSearchHistories.map { it.toDTO() }
+            placeSearchHistories.map { it.toDTO() }
+        } else {
+            return qPlaceSearchHistoryRepository.findUniqueKeywordAndLastCreatedAtOrderByLastCreatedAtDesc(accountId)
+                .map {
+                    KeywordAndLastSearchedAtDTO(
+                        keyword = it.get(0, String::class.java)!!,
+                        lastCreatedAt = it.get(1, OffsetDateTime::class.java)!!
+                    )
+                }
+        }
     }
 
     fun getFrequentPlaceSearchKeywords(limit: Long): List<KeywordAndCountDTO> {
