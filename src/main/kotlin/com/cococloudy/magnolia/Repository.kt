@@ -34,6 +34,16 @@ class QPlaceSearchHistoryRepository(
             .limit(limit)
             .fetch()
     }
+
+    fun findUniqueKeywordAndLastCreatedAtOrderByLastCreatedAtDesc(accountId: Long): List<Tuple> {
+        return query
+            .select(qPlaceSearchHistory.keyword, qPlaceSearchHistory.createdAt.max())
+            .from(qPlaceSearchHistory)
+            .where(qPlaceSearchHistory.accountId.eq(accountId))
+            .groupBy(qPlaceSearchHistory.keyword)
+            .orderBy(qPlaceSearchHistory.createdAt.max().desc())
+            .fetch()
+    }
 }
 
 @Repository

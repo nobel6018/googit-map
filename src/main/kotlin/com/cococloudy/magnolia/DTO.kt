@@ -67,3 +67,8 @@ data class KeywordAndCountDTO(
     val keyword: String,
     val count: Long
 )
+
+data class KeywordAndLastSearchedAtDTO(
+    val keyword: String,
+    val lastCreatedAt: OffsetDateTime
+)

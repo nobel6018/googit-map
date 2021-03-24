@@ -74,6 +74,11 @@ GET http://localhost:8080/api/v1/histories/me/placeSearch
 Authorization: Bearer {{accessToken}}
 
 
+### 내 검색 히스토리 API with uniqueKeyword parameter
+GET http://localhost:8080/api/v1/histories/me/placeSearch?uniqueKeyword=true
+Authorization: Bearer {{accessToken}}
+
+
 ### 인기 키워드 목록 API
 GET http://localhost:8080/api/v1/histories/placeSearch/top10
 Authorization: Bearer {{accessToken}}
