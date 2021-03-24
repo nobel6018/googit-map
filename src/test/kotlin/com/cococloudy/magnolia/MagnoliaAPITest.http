@@ -59,7 +59,7 @@ if (response.body.refreshToken != null) {
 %}
 
 
-### 장소 검색 API
+### 장소 검색 API (Caching the results is default policy)
 GET http://localhost:8080/api/v1/search/place?keyword=은행
 Authorization: Bearer {{accessToken}}
 
@@ -69,13 +69,13 @@ GET http://localhost:8080/api/v1/search/place?keyword=은행&forceRefresh=true
 Authorization: Bearer {{accessToken}}
 
 
-### 내 검색 히스토리 API
-GET http://localhost:8080/api/v1/histories/me/placeSearch
+### 내 검색 히스토리 API with uniqueKeyword parameter
+GET http://localhost:8080/api/v1/histories/me/placeSearch?uniqueKeyword=true
 Authorization: Bearer {{accessToken}}
 
 
-### 내 검색 히스토리 API with uniqueKeyword parameter
-GET http://localhost:8080/api/v1/histories/me/placeSearch?uniqueKeyword=true
+### 내 검색 히스토리 API
+GET http://localhost:8080/api/v1/histories/me/placeSearch
 Authorization: Bearer {{accessToken}}
 
 
