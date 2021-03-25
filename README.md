@@ -2,11 +2,10 @@ Magnolia API Server For Searching Places
 
 ## API 테스트
 
-- src/test/kotlin/com/cococloudy/magnolia/MagnoliaAPITest.http
-- 위의 http client 파일에 API를 테스트 해 볼 수 있습니다
-- Spring Boot 서버를 실행하면 H2 데이터베이스도 함께 실행됩니다 (관련설정 :
-  src/main/kotlin/com/cococloudy/magnolia/config/H2ServerConfiguration.kt)
-- 예시 더미 데이터는 data/magnolia.mv.db에 함께 저장되어 있습니다
+1. Spring Boot 서버를 실행하면 H2 데이터베이스도 함께 실행됩니다 (관련설정 :
+   src/main/kotlin/com/cococloudy/magnolia/config/H2ServerConfiguration.kt)
+2. http request (src/test/kotlin/com/cococloudy/magnolia/MagnoliaAPITest.http) 파일에서 API를 테스트 해 볼 수 있습니다
+3. 예시 더미 데이터는 data/magnolia.mv.db에 함께 저장되어 있습니다
 
 ## 사용한 외부라이브러리
 
