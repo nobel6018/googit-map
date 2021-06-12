@@ -1,9 +1,9 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    val kotlinVersion = "1.4.31"
+    val kotlinVersion = "1.5.10"
 
-    id("org.springframework.boot") version "2.4.4"
+    id("org.springframework.boot") version "2.5.1"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     war
     kotlin("jvm") version kotlinVersion
@@ -23,7 +23,9 @@ repositories {
 }
 
 dependencies {
+    // managed dependencies version
     val jsonwebtokenVersion = "0.11.2"
+    val okhttpVersion = "4.9.1"
     val openApiVersion = "1.5.6"
     val querydslVersion = "4.4.0"
 
@@ -42,10 +44,10 @@ dependencies {
     implementation("io.jsonwebtoken:jjwt-api:$jsonwebtokenVersion")
     runtimeOnly("io.jsonwebtoken:jjwt-impl:$jsonwebtokenVersion")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:$jsonwebtokenVersion")
-    implementation("com.squareup.okhttp3:okhttp:4.9.0")
+    implementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
     implementation("org.springdoc:springdoc-openapi-ui:$openApiVersion")
     implementation("org.springdoc:springdoc-openapi-kotlin:$openApiVersion")
-    implementation("com.querydsl:querydsl-jpa:$querydslVersion")
+    implementation("com.querydsl:querydsl-jpa")
     kapt("com.querydsl:querydsl-apt:$querydslVersion:jpa")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     annotationProcessor(group = "com.querydsl", name = "querydsl-apt", classifier = "jpa")
