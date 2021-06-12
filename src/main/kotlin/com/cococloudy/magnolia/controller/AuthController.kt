@@ -2,7 +2,6 @@ package com.cococloudy.magnolia.controller
 
 import com.cococloudy.magnolia.RefreshTokenDTO
 import com.cococloudy.magnolia.service.AuthService
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper
 import org.springframework.web.bind.annotation.PostMapping
@@ -13,10 +12,9 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/v1/auth", produces = ["application/json"])
-class AuthController {
-
-    @Autowired
-    private lateinit var authService: AuthService
+class AuthController(
+    private val authService: AuthService,
+) {
 
     @PostMapping("/refreshToken")
     fun refreshToken(

@@ -4,14 +4,14 @@ import com.cococloudy.magnolia.AccessAndRefreshTokenDTO
 import com.cococloudy.magnolia.AccessTokenDTO
 import com.cococloudy.magnolia.Day
 import com.cococloudy.magnolia.security.JwtService
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 
 @Component
-class AuthService {
-
-    @Autowired
-    private lateinit var jwtService: JwtService
+@Transactional(readOnly = true)
+class AuthService(
+    private val jwtService: JwtService,
+) {
 
     fun createAccessAndRefreshToken(accountId: Long): AccessAndRefreshTokenDTO {
         return AccessAndRefreshTokenDTO(

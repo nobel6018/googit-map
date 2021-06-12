@@ -17,7 +17,8 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 
-class JwtTokenAuthenticationFilter(private val jwtConfig: JwtConfig, private val jwtParser: JwtParser) : OncePerRequestFilter() {
+class JwtTokenAuthenticationFilter(private val jwtConfig: JwtConfig, private val jwtParser: JwtParser) :
+    OncePerRequestFilter() {
 
     @Throws(ServletException::class, IOException::class)
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain) {
@@ -52,13 +53,16 @@ class JwtTokenAuthenticationFilter(private val jwtConfig: JwtConfig, private val
 
             response.status = 401
             response.addHeader("Content-Type", "application/json")
-            response.writer.write(convertObjectToJson(
-                AccessTokenExpiredCustomException(
-                    status = HttpStatus.UNAUTHORIZED.value(),
-                    error = HttpStatus.UNAUTHORIZED.reasonPhrase,
-                    message = "Access token is expired",
-                    path = request.requestURI)
-            ))
+            response.writer.write(
+                convertObjectToJson(
+                    AccessTokenExpiredCustomException(
+                        status = HttpStatus.UNAUTHORIZED.value(),
+                        error = HttpStatus.UNAUTHORIZED.reasonPhrase,
+                        message = "Access token is expired",
+                        path = request.requestURI
+                    )
+                )
+            )
             return
         } catch (e: Exception) {
             SecurityContextHolder.clearContext()

@@ -3,21 +3,16 @@ package com.cococloudy.magnolia.service
 import com.cococloudy.magnolia.*
 import com.cococloudy.magnolia.security.BCryptPasswordEncoder
 import com.cococloudy.magnolia.security.JwtService
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
 @Component
-class AccountService {
-
-    @Autowired
-    private lateinit var accountRepository: AccountRepository
-
-    @Autowired
-    private lateinit var encoder: BCryptPasswordEncoder
-
-    @Autowired
-    private lateinit var jwtService: JwtService
+@Transactional(readOnly = true)
+class AccountService(
+    private val accountRepository: AccountRepository,
+    private val encoder: BCryptPasswordEncoder,
+    private val jwtService: JwtService,
+) {
 
     fun isAccountIdExist(accountId: String): Boolean {
         return accountRepository.findByAccountId(accountId) != null
