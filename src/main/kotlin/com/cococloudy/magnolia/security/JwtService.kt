@@ -5,8 +5,8 @@ import com.cococloudy.magnolia.NotFoundException
 import com.cococloudy.magnolia.WrongRequestException
 import io.jsonwebtoken.*
 import io.jsonwebtoken.security.SignatureException
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.nio.charset.Charset
@@ -19,16 +19,12 @@ import java.security.spec.X509EncodedKeySpec
 import java.util.*
 
 @Component
-class JwtService {
-
-    @Autowired
-    private lateinit var accountRepository: AccountRepository
-
-    @Autowired
-    private lateinit var magnoliaKeyPair: MagnoliaKeyPair
-
-    @Autowired
-    private lateinit var jwtConfig: JwtConfig
+@Transactional(readOnly = true)
+class JwtService(
+    val accountRepository: AccountRepository,
+    val magnoliaKeyPair: MagnoliaKeyPair,
+    val jwtConfig: JwtConfig,
+) {
 
     fun createAccessToken(accountId: Long): String {
         val account = accountRepository.findById(accountId).orElseThrow { NotFoundException("account", accountId) }

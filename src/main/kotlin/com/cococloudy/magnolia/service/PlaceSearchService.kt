@@ -5,40 +5,23 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
 @Component
-class PlaceSearchService {
-
-    @Value("\${kakao.restApiKey}")
-    private lateinit var kakaoRestApiKey: String
-
-    @Value("\${kakao.localApi.url}")
-    private lateinit var kakaoLocalApiUrl: String
-
-    @Value("\${naver.clientId}")
-    private lateinit var naverClientId: String
-
-    @Value("\${naver.clientSecret}")
-    private lateinit var naverClientSecret: String
-
-    @Value("\${naver.localApi.url}")
-    private lateinit var naverLocalApiUrl: String
-
-    @Autowired
-    private lateinit var placeSearchHistoryRepository: PlaceSearchHistoryRepository
-
-    @Autowired
-    private lateinit var placeSearchCacheRepository: PlaceSearchCacheRepository
-
-    @Autowired
-    private lateinit var okHttpClient: OkHttpClient
-
-    @Autowired
-    private lateinit var objectMapper: ObjectMapper
+@Transactional(readOnly = true)
+class PlaceSearchService(
+    @Value("\${kakao.restApiKey}") val kakaoRestApiKey: String,
+    @Value("\${kakao.localApi.url}") val kakaoLocalApiUrl: String,
+    @Value("\${naver.clientId}") val naverClientId: String,
+    @Value("\${naver.clientSecret}") val naverClientSecret: String,
+    @Value("\${naver.localApi.url}") val naverLocalApiUrl: String,
+    val placeSearchHistoryRepository: PlaceSearchHistoryRepository,
+    val placeSearchCacheRepository: PlaceSearchCacheRepository,
+    val okHttpClient: OkHttpClient,
+    val objectMapper: ObjectMapper,
+) {
 
     val CACHE_VALID_MILLISECOND = 86_400_000L  // 24 hour
 

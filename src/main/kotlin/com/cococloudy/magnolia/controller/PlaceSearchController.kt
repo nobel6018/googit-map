@@ -3,7 +3,6 @@ package com.cococloudy.magnolia.controller
 import com.cococloudy.magnolia.PlaceSearchResultDTO
 import com.cococloudy.magnolia.extractAccountId
 import com.cococloudy.magnolia.service.PlaceSearchService
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper
 import org.springframework.transaction.annotation.Transactional
@@ -14,10 +13,9 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/v1/search", produces = ["application/json"])
-class PlaceSearchController {
-
-    @Autowired
-    private lateinit var placeSearchService: PlaceSearchService
+class PlaceSearchController(
+    val placeSearchService: PlaceSearchService,
+) {
 
     @Transactional
     @GetMapping("/place")

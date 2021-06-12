@@ -6,19 +6,15 @@ import com.cococloudy.magnolia.Role
 import com.cococloudy.magnolia.WrongRequestException
 import com.cococloudy.magnolia.service.AccountService
 import com.cococloudy.magnolia.service.AuthService
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/v1/account", produces = ["application/json"])
-class AccountController {
-
-    @Autowired
-    private lateinit var authService: AuthService
-
-    @Autowired
-    private lateinit var accountService: AccountService
+class AccountController(
+    val authService: AuthService,
+    val accountService: AccountService,
+) {
 
     @GetMapping("/isAccountIdExist")
     fun isAccountIdExist(

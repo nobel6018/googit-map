@@ -4,18 +4,14 @@ import com.cococloudy.magnolia.KeywordAndCountDTO
 import com.cococloudy.magnolia.KeywordAndLastSearchedAtDTO
 import com.cococloudy.magnolia.PlaceSearchHistoryRepository
 import com.cococloudy.magnolia.QPlaceSearchHistoryRepository
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.time.OffsetDateTime
 
 @Component
-class PlaceSearchHistoryService {
-
-    @Autowired
-    private lateinit var placeSearchHistoryRepository: PlaceSearchHistoryRepository
-
-    @Autowired
-    private lateinit var qPlaceSearchHistoryRepository: QPlaceSearchHistoryRepository
+class PlaceSearchHistoryService(
+    val placeSearchHistoryRepository: PlaceSearchHistoryRepository,
+    val qPlaceSearchHistoryRepository: QPlaceSearchHistoryRepository,
+) {
 
     fun getPlaceSearchHistories(accountId: Long, uniqueKeyword: Boolean): List<Any> {
         return if (!uniqueKeyword) {
