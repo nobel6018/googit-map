@@ -9,8 +9,8 @@ import java.time.OffsetDateTime
 
 @Component
 class PlaceSearchHistoryService(
-    val placeSearchHistoryRepository: PlaceSearchHistoryRepository,
-    val qPlaceSearchHistoryRepository: QPlaceSearchHistoryRepository,
+    private val placeSearchHistoryRepository: PlaceSearchHistoryRepository,
+    private val qPlaceSearchHistoryRepository: QPlaceSearchHistoryRepository,
 ) {
 
     fun getPlaceSearchHistories(accountId: Long, uniqueKeyword: Boolean): List<Any> {

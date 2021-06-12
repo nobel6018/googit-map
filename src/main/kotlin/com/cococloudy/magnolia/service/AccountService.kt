@@ -9,9 +9,9 @@ import org.springframework.transaction.annotation.Transactional
 @Component
 @Transactional(readOnly = true)
 class AccountService(
-    val accountRepository: AccountRepository,
-    val encoder: BCryptPasswordEncoder,
-    val jwtService: JwtService,
+    private val accountRepository: AccountRepository,
+    private val encoder: BCryptPasswordEncoder,
+    private val jwtService: JwtService,
 ) {
 
     fun isAccountIdExist(accountId: String): Boolean {

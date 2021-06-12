@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/v1/histories", produces = ["application/json"])
 class PlaceSearchHistoryController(
-    val placeSearchHistoryService: PlaceSearchHistoryService,
+    private val placeSearchHistoryService: PlaceSearchHistoryService,
 ) {
 
     @GetMapping("/me/placeSearch")

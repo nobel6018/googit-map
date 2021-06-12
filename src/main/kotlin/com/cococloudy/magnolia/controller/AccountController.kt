@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/v1/account", produces = ["application/json"])
 class AccountController(
-    val authService: AuthService,
-    val accountService: AccountService,
+    private val authService: AuthService,
+    private val accountService: AccountService,
 ) {
 
     @GetMapping("/isAccountIdExist")

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/v1/auth", produces = ["application/json"])
 class AuthController(
-    val authService: AuthService,
+    private val authService: AuthService,
 ) {
 
     @PostMapping("/refreshToken")

@@ -12,15 +12,25 @@ import org.springframework.transaction.annotation.Transactional
 @Component
 @Transactional(readOnly = true)
 class PlaceSearchService(
-    @Value("\${kakao.restApiKey}") val kakaoRestApiKey: String,
-    @Value("\${kakao.localApi.url}") val kakaoLocalApiUrl: String,
-    @Value("\${naver.clientId}") val naverClientId: String,
-    @Value("\${naver.clientSecret}") val naverClientSecret: String,
-    @Value("\${naver.localApi.url}") val naverLocalApiUrl: String,
-    val placeSearchHistoryRepository: PlaceSearchHistoryRepository,
-    val placeSearchCacheRepository: PlaceSearchCacheRepository,
-    val okHttpClient: OkHttpClient,
-    val objectMapper: ObjectMapper,
+    @Value("\${kakao.restApiKey}")
+    private val kakaoRestApiKey: String,
+
+    @Value("\${kakao.localApi.url}")
+    private val kakaoLocalApiUrl: String,
+
+    @Value("\${naver.clientId}")
+    private val naverClientId: String,
+
+    @Value("\${naver.clientSecret}")
+    private val naverClientSecret: String,
+
+    @Value("\${naver.localApi.url}")
+    private val naverLocalApiUrl: String,
+
+    private val placeSearchHistoryRepository: PlaceSearchHistoryRepository,
+    private val placeSearchCacheRepository: PlaceSearchCacheRepository,
+    private val okHttpClient: OkHttpClient,
+    private val objectMapper: ObjectMapper,
 ) {
 
     val CACHE_VALID_MILLISECOND = 86_400_000L  // 24 hour

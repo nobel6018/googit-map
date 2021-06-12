@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/v1/search", produces = ["application/json"])
 class PlaceSearchController(
-    val placeSearchService: PlaceSearchService,
+    private val placeSearchService: PlaceSearchService,
 ) {
 
     @Transactional

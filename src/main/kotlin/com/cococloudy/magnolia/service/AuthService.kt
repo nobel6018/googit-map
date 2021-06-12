@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional
 @Component
 @Transactional(readOnly = true)
 class AuthService(
-    val jwtService: JwtService,
+    private val jwtService: JwtService,
 ) {
 
     fun createAccessAndRefreshToken(accountId: Long): AccessAndRefreshTokenDTO {
