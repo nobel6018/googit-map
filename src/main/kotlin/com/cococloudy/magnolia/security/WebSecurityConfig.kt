@@ -46,7 +46,7 @@ class WebSecurityConfig(
             .antMatchers(HttpMethod.GET, "/api/v1/account/isAccountIdExist").permitAll()
             .antMatchers(HttpMethod.POST, "/api/v1/account/signUp").permitAll()
             .antMatchers(HttpMethod.POST, "/api/v1/account/login").permitAll()
-            .antMatchers(HttpMethod.POST, "/api/v1/auth/refreshToken").permitAll()
+            .antMatchers(HttpMethod.POST, "/api/v1/refreshToken").permitAll()
             .antMatchers("/api/v1/admin/**").hasAuthority("ADMIN")
             .anyRequest()
             .authenticated()

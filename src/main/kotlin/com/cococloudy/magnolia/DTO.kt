@@ -15,10 +15,6 @@ data class AuthInfoDTO(
     val password: String
 )
 
-data class AccessTokenDTO(
-    val accessToken: String
-)
-
 data class RefreshTokenDTO(
     val refreshToken: String
 )
@@ -26,6 +22,11 @@ data class RefreshTokenDTO(
 data class AccessAndRefreshTokenDTO(
     val accessToken: String,
     val refreshToken: String
+)
+
+data class AccessAndOptionalRefreshTokenDTO(
+    val accessToken: String,
+    val refreshToken: String? = null
 )
 
 data class PlaceSearchHistoryDTO(

@@ -1,12 +1,10 @@
 package com.cococloudy.magnolia.controller
 
-import com.cococloudy.magnolia.AccessAndRefreshTokenDTO
-import com.cococloudy.magnolia.AuthInfoDTO
-import com.cococloudy.magnolia.Role
-import com.cococloudy.magnolia.WrongRequestException
+import com.cococloudy.magnolia.*
 import com.cococloudy.magnolia.service.AccountService
 import com.cococloudy.magnolia.service.AuthService
 import org.springframework.http.ResponseEntity
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -48,5 +46,15 @@ class AccountController(
         val accessAndRefreshToken = accountService.loginByIdAndPassword(authInfo.accountId, authInfo.password)
 
         return ResponseEntity.ok(accessAndRefreshToken)
+    }
+
+    @PostMapping("/api/v1/refreshToken")
+    fun refreshToken(
+        @RequestBody refreshToken: RefreshTokenDTO,
+        request: SecurityContextHolderAwareRequestWrapper
+    ): ResponseEntity<AccessAndOptionalRefreshTokenDTO> {
+        val accessAndOptionalRefreshToken = authService.refreshToken(refreshToken.refreshToken)
+
+        return ResponseEntity.ok(accessAndOptionalRefreshToken)
     }
 }

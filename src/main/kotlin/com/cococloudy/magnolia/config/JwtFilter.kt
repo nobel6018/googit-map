@@ -51,12 +51,12 @@ class JwtTokenAuthenticationFilter(
                 SecurityContextHolder.getContext().authentication = auth
             }
         } catch (expiredException: ExpiredJwtException) {
-            if (request.requestURI == "/api/v1/auth/refreshToken") {
+            if (request.requestURI == "/api/v1/refreshToken") {
                 chain.doFilter(request, response)
                 return
             }
 
-            response.status = 401
+            response.status = HttpServletResponse.SC_UNAUTHORIZED
             response.addHeader("Content-Type", "application/json")
             response.writer.write(
                 convertObjectToJson(
