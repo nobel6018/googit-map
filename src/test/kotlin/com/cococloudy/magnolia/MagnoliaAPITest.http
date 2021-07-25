@@ -4,11 +4,11 @@ Accept: application/json
 
 
 ### 아이디 중복 확인 API
-GET http://localhost:8080/api/v1/account/isAccountIdExist?accountId=googit
+GET http://localhost:8080/api/v1/account/isUserIdExist?userId=googit
 Accept: application/json
 
 ### 회원가입 API (취약한 패스워드 -> HTTP 400 에러)
-POST http://localhost:8080/api/v1/account/signUp
+POST http://localhost:8080/api/v1/signUp
 Content-Type: application/json
 
 {
@@ -17,7 +17,7 @@ Content-Type: application/json
 }
 
 ### 회원가입 API (HTTP 200)
-POST http://localhost:8080/api/v1/account/signUp
+POST http://localhost:8080/api/v1/signUp
 Content-Type: application/json
 
 {
@@ -31,7 +31,7 @@ client.global.set("refreshToken", response.body.refreshToken);
 
 
 ### 로그인 API
-POST http://localhost:8080/api/v1/account/login
+POST http://localhost:8080/api/v1/login
 Content-Type: application/json
 
 {
@@ -45,7 +45,7 @@ client.global.set("refreshToken", response.body.refreshToken);
 
 
 ### 리프레쉬 토큰으로 토큰 갱신 API
-POST http://localhost:8080/api/v1/auth/refreshToken
+POST http://localhost:8080/api/v1/refreshToken
 Content-Type: application/json
 
 {
@@ -70,12 +70,12 @@ Authorization: Bearer {{accessToken}}
 
 
 ### 내 검색 히스토리 API with uniqueKeyword parameter
-GET http://localhost:8080/api/v1/histories/me/placeSearch?uniqueKeyword=true
+GET http://localhost:8080/api/v1/histories/placeSearch/me?uniqueKeyword=true
 Authorization: Bearer {{accessToken}}
 
 
 ### 내 검색 히스토리 API
-GET http://localhost:8080/api/v1/histories/me/placeSearch
+GET http://localhost:8080/api/v1/histories/placeSearch/me
 Authorization: Bearer {{accessToken}}
 
 

@@ -1,9 +1,9 @@
 package com.cococloudy.magnolia
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategy
+import com.fasterxml.jackson.databind.PropertyNamingStrategies
 import com.fasterxml.jackson.databind.annotation.JsonNaming
 
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy::class)
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy::class)
 data class KakaoPlaceDTO(
     val id: String,
     val placeName: String,
@@ -19,7 +19,7 @@ data class KakaoPlaceDTO(
     val distance: String?,
 )
 
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy::class)
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy::class)
 data class KakaoPlaceMeta(
     val totalCount: Long,
     val pageableCount: Long,
@@ -27,7 +27,7 @@ data class KakaoPlaceMeta(
     val sameName: KakaoSameNameDTO,
 )
 
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy::class)
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy::class)
 data class KakaoSameNameDTO(
     val region: List<Any>,
     val keyword: String,

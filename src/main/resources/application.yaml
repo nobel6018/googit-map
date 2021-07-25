@@ -1,23 +1,16 @@
 spring:
-  h2:
-    console:
-      enabled: true
-  profiles:
-    active: local
   datasource:
-    hikari:
-      jdbc-url: jdbc:h2:tcp://localhost/./data/magnolia
-      driver-class-name: org.h2.Driver
-      username: sa
-      password:
+    url: jdbc:h2:tcp://localhost/~/magnolia
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         show_sql: true
   jackson:
-    default-property-inclusion: non_null
     serialization:
       write-dates-as-timestamps: false
   lifecycle:
@@ -46,3 +39,31 @@ naver:
   clientSecret: DmWmsRITJq
   localApi:
     url: https://openapi.naver.com/v1/search/local.json
+
+--- #dev
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: username
+    password: securePassword12!@
+    url: jdbc:mysql://127.0.0.1:3306/dev-database
+  jpa:
+    hibernate:
+      ddl-auto: update
+  config:
+    activate:
+      on-profile: dev
+
+--- #prod
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: username
+    password: securePassword12!@
+    url: jdbc:mysql://127.0.0.1:3306/prod-database
+  jpa:
+    hibernate:
+      ddl-auto: none
+  config:
+    activate:
+      on-profile: prod

@@ -5,11 +5,11 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-@RequestMapping("/api/v1/health")
+@RequestMapping(produces = ["application/json"])
 @RestController
 class HealthController {
 
-    @GetMapping("/ping")
+    @GetMapping("/api/v1/health/ping")
     fun ping(): ResponseEntity<String> {
         return ResponseEntity.ok("pong")
     }

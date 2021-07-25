@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/v1/search", produces = ["application/json"])
+@RequestMapping(produces = ["application/json"])
 class PlaceSearchController(
     private val placeSearchService: PlaceSearchService,
 ) {
 
     @Transactional
-    @GetMapping("/place")
+    @GetMapping("/api/v1/search/place")
     fun searchPlace(
         @RequestParam keyword: String,
         @RequestParam(required = false) forceRefresh: Boolean?,

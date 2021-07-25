@@ -1,13 +1,14 @@
 package com.cococloudy.magnolia.config
 
 import com.cococloudy.magnolia.security.JwtConfig
+import com.cococloudy.magnolia.security.JwtService
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.jsonwebtoken.ExpiredJwtException
-import io.jsonwebtoken.JwtParser
 import org.springframework.http.HttpStatus
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 import java.io.IOException
 import java.time.OffsetDateTime
@@ -17,8 +18,11 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 
-class JwtTokenAuthenticationFilter(private val jwtConfig: JwtConfig, private val jwtParser: JwtParser) :
-    OncePerRequestFilter() {
+@Component
+class JwtTokenAuthenticationFilter(
+    private val jwtConfig: JwtConfig,
+    private val jwtService: JwtService
+) : OncePerRequestFilter() {
 
     @Throws(ServletException::class, IOException::class)
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain) {
@@ -33,6 +37,7 @@ class JwtTokenAuthenticationFilter(private val jwtConfig: JwtConfig, private val
         val token = header.replace(jwtConfig.prefix, "")
 
         try {
+            val jwtParser = jwtService.getJwtParser()
             val parsedJwt = jwtParser.parseClaimsJws(token)
 
             val userId = parsedJwt.body["sub"]
@@ -46,12 +51,12 @@ class JwtTokenAuthenticationFilter(private val jwtConfig: JwtConfig, private val
                 SecurityContextHolder.getContext().authentication = auth
             }
         } catch (expiredException: ExpiredJwtException) {
-            if (request.requestURI == "/api/v1/auth/refreshToken") {
+            if (request.requestURI == "/api/v1/refreshToken") {
                 chain.doFilter(request, response)
                 return
             }
 
-            response.status = 401
+            response.status = HttpServletResponse.SC_UNAUTHORIZED
             response.addHeader("Content-Type", "application/json")
             response.writer.write(
                 convertObjectToJson(

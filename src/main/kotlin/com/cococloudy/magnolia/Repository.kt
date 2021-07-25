@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Repository
 interface AccountRepository : CrudRepository<Account, Long> {
-    fun findByAccountId(accountId: String): Account?
+    fun findByUserId(userId: String): Account?
 }
 
 @Repository
@@ -21,7 +21,7 @@ interface PlaceSearchHistoryRepository : CrudRepository<PlaceSearchHistory, Long
 
 @Repository
 class QPlaceSearchHistoryRepository(
-    val query: JPAQueryFactory
+    private val query: JPAQueryFactory
 ) {
     private val qPlaceSearchHistory = QPlaceSearchHistory.placeSearchHistory
 
@@ -39,7 +39,7 @@ class QPlaceSearchHistoryRepository(
         return query
             .select(qPlaceSearchHistory.keyword, qPlaceSearchHistory.createdAt.max())
             .from(qPlaceSearchHistory)
-            .where(qPlaceSearchHistory.accountId.eq(accountId))
+            .where(qPlaceSearchHistory.account.id.eq(accountId))
             .groupBy(qPlaceSearchHistory.keyword)
             .orderBy(qPlaceSearchHistory.createdAt.max().desc())
             .fetch()

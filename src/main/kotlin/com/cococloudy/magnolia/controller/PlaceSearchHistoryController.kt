@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/v1/histories", produces = ["application/json"])
+@RequestMapping(produces = ["application/json"])
 class PlaceSearchHistoryController(
     private val placeSearchHistoryService: PlaceSearchHistoryService,
 ) {
 
-    @GetMapping("/me/placeSearch")
+    @GetMapping("/api/v1/histories/placeSearch/me")
     fun getMyPlaceSearchHistories(
         @RequestParam(required = false) uniqueKeyword: Boolean?,
         request: SecurityContextHolderAwareRequestWrapper
@@ -29,7 +29,7 @@ class PlaceSearchHistoryController(
         return ResponseEntity.ok(myPlaceSearchHistories)
     }
 
-    @GetMapping("/placeSearch/top10")
+    @GetMapping("/api/v1/histories/placeSearch/top10")
     fun getTop10PlaceSearchHistories(
         request: SecurityContextHolderAwareRequestWrapper
     ): ResponseEntity<List<KeywordAndCountDTO>> {

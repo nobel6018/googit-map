@@ -1,7 +1,7 @@
 package com.cococloudy.magnolia.service
 
+import com.cococloudy.magnolia.AccessAndOptionalRefreshTokenDTO
 import com.cococloudy.magnolia.AccessAndRefreshTokenDTO
-import com.cococloudy.magnolia.AccessTokenDTO
 import com.cococloudy.magnolia.Day
 import com.cococloudy.magnolia.security.JwtService
 import org.springframework.stereotype.Component
@@ -20,7 +20,7 @@ class AuthService(
         )
     }
 
-    fun refreshToken(refreshToken: String): Any {
+    fun refreshToken(refreshToken: String): AccessAndOptionalRefreshTokenDTO {
         jwtService.checkRefreshTokenValid(refreshToken)
 
         val jwtParser = jwtService.getJwtParser()
@@ -35,12 +35,14 @@ class AuthService(
         }
     }
 
-    private fun refreshTokenGraterThanThreeDays(accountId: Long): AccessTokenDTO {
-        return AccessTokenDTO(jwtService.createAccessToken(accountId))
+    private fun refreshTokenGraterThanThreeDays(accountId: Long): AccessAndOptionalRefreshTokenDTO {
+        return AccessAndOptionalRefreshTokenDTO(
+            jwtService.createAccessToken(accountId)
+        )
     }
 
-    private fun refreshTokenLessOrEqualThreeDays(accountId: Long): AccessAndRefreshTokenDTO {
-        return AccessAndRefreshTokenDTO(
+    private fun refreshTokenLessOrEqualThreeDays(accountId: Long): AccessAndOptionalRefreshTokenDTO {
+        return AccessAndOptionalRefreshTokenDTO(
             jwtService.createAccessToken(accountId),
             jwtService.createRefreshToken(accountId)
         )
