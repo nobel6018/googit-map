@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
-@RequestMapping("/api/v1/auth", produces = ["application/json"])
+@RequestMapping(produces = ["application/json"])
 class AuthController(
     private val authService: AuthService,
 ) {
 
-    @PostMapping("/refreshToken")
+    @PostMapping("/api/v1/refreshToken")
     fun refreshToken(
         @RequestBody refreshToken: RefreshTokenDTO,
         request: SecurityContextHolderAwareRequestWrapper

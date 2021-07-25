@@ -5,10 +5,9 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming
 import java.time.OffsetDateTime
 
 data class AccountDTO(
-    val id: Long?,
-    val accountId: String,
+    val id: Long,
+    val userId: String,
     val createdAt: OffsetDateTime,
-    val updatedAt: OffsetDateTime?,
 )
 
 data class AuthInfoDTO(
@@ -30,11 +29,10 @@ data class AccessAndRefreshTokenDTO(
 )
 
 data class PlaceSearchHistoryDTO(
-    val id: Long?,
+    val id: Long,
     val accountId: Long,
     val keyword: String,
     val createdAt: OffsetDateTime,
-    val updatedAt: OffsetDateTime?,
 )
 
 data class PlaceSearchResultDTO(

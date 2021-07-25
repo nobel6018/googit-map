@@ -6,19 +6,19 @@ import javax.persistence.*
 @Entity
 data class Account(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "account_id")
     val id: Long? = null,
     @Enumerated(EnumType.STRING)
     val role: Role = Role.USER,
-    val accountId: String,
+    val userId: String,
     val password: String,
     val createdAt: OffsetDateTime = OffsetDateTime.now(),
     val updatedAt: OffsetDateTime? = null,
 ) {
     fun toDTO() = AccountDTO(
-        id = id,
-        accountId = accountId,
+        id = id!!,
+        userId = userId,
         createdAt = createdAt,
-        updatedAt = updatedAt,
     )
 }
 
@@ -29,6 +29,7 @@ enum class Role {
 @Entity
 data class PlaceSearchHistory(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "place_search_history_id")
     val id: Long? = null,
     val accountId: Long,  // fk (not to constraint fk, deal with logic)
     val keyword: String,
@@ -36,17 +37,17 @@ data class PlaceSearchHistory(
     val updatedAt: OffsetDateTime? = null,
 ) {
     fun toDTO() = PlaceSearchHistoryDTO(
-        id = id,
+        id = id!!,
         accountId = accountId,
         keyword = keyword,
         createdAt = createdAt,
-        updatedAt = updatedAt,
     )
 }
 
 @Entity
 data class PlaceSearchCache(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "place_search_cache_id")
     val id: Long? = null,
     val initial: Boolean,
     val nodeId: String,

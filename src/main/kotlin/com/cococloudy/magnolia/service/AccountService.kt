@@ -14,14 +14,14 @@ class AccountService(
     private val jwtService: JwtService,
 ) {
 
-    fun isAccountIdExist(accountId: String): Boolean {
-        return accountRepository.findByAccountId(accountId) != null
+    fun isUserIdExist(accountId: String): Boolean {
+        return accountRepository.findByUserId(accountId) != null
     }
 
     @Transactional
     fun createAccount(accountId: String, password: String, role: Role): AccountDTO {
         val account = Account(
-            accountId = accountId,
+            userId = accountId,
             password = encoder.encode(password),
             role = role,
         )
@@ -31,7 +31,7 @@ class AccountService(
     }
 
     fun loginByIdAndPassword(accountId: String, password: String): AccessAndRefreshTokenDTO {
-        val account = accountRepository.findByAccountId(accountId)
+        val account = accountRepository.findByUserId(accountId)
             ?: throw NotFoundException("Account", accountId)
 
         if (!encoder.matches(password, account.password)) {

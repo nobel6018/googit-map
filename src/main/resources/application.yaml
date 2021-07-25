@@ -6,7 +6,7 @@ spring:
     driver-class-name: org.h2.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         show_sql: true
@@ -47,6 +47,9 @@ spring:
     username: username
     password: securePassword12!@
     url: jdbc:mysql://127.0.0.1:3306/dev-database
+  jpa:
+    hibernate:
+      ddl-auto: update
   config:
     activate:
       on-profile: dev
@@ -58,6 +61,9 @@ spring:
     username: username
     password: securePassword12!@
     url: jdbc:mysql://127.0.0.1:3306/prod-database
+  jpa:
+    hibernate:
+      ddl-auto: none
   config:
     activate:
       on-profile: prod

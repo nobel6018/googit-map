@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Repository
 interface AccountRepository : CrudRepository<Account, Long> {
-    fun findByAccountId(accountId: String): Account?
+    fun findByUserId(userId: String): Account?
 }
 
 @Repository
@@ -21,7 +21,7 @@ interface PlaceSearchHistoryRepository : CrudRepository<PlaceSearchHistory, Long
 
 @Repository
 class QPlaceSearchHistoryRepository(
-    val query: JPAQueryFactory
+    private val query: JPAQueryFactory
 ) {
     private val qPlaceSearchHistory = QPlaceSearchHistory.placeSearchHistory
 
