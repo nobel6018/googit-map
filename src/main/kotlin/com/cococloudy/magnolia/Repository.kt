@@ -39,7 +39,7 @@ class QPlaceSearchHistoryRepository(
         return query
             .select(qPlaceSearchHistory.keyword, qPlaceSearchHistory.createdAt.max())
             .from(qPlaceSearchHistory)
-            .where(qPlaceSearchHistory.accountId.eq(accountId))
+            .where(qPlaceSearchHistory.account.id.eq(accountId))
             .groupBy(qPlaceSearchHistory.keyword)
             .orderBy(qPlaceSearchHistory.createdAt.max().desc())
             .fetch()

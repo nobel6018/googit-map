@@ -6,6 +6,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
@@ -27,6 +28,7 @@ class PlaceSearchService(
     @Value("\${naver.localApi.url}")
     private val naverLocalApiUrl: String,
 
+    private val accountRepository: AccountRepository,
     private val placeSearchHistoryRepository: PlaceSearchHistoryRepository,
     private val placeSearchCacheRepository: PlaceSearchCacheRepository,
     private val okHttpClient: OkHttpClient,
@@ -54,10 +56,8 @@ class PlaceSearchService(
 
     @Transactional
     fun createPlaceSearchHistory(accountId: Long, keyword: String) {
-        val searchHistory = PlaceSearchHistory(
-            accountId = accountId,
-            keyword = keyword
-        )
+        val account = accountRepository.findByIdOrNull(accountId) ?: throw NotFoundException("Account", accountId)
+        val searchHistory = PlaceSearchHistory.createPlaceSearchHistory(account, keyword)
 
         placeSearchHistoryRepository.save(searchHistory)
     }

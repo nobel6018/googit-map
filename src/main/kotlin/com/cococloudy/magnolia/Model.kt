@@ -12,6 +12,8 @@ data class Account(
     val role: Role = Role.USER,
     val userId: String,
     val password: String,
+    @OneToMany(mappedBy = "account")
+    val placeSearchHistories: List<PlaceSearchHistory>? = null,
     val createdAt: OffsetDateTime = OffsetDateTime.now(),
     val updatedAt: OffsetDateTime? = null,
 ) {
@@ -31,17 +33,28 @@ data class PlaceSearchHistory(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "place_search_history_id")
     val id: Long? = null,
-    val accountId: Long,  // fk (not to constraint fk, deal with logic)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id")
+    val account: Account,
     val keyword: String,
     val createdAt: OffsetDateTime = OffsetDateTime.now(),
     val updatedAt: OffsetDateTime? = null,
 ) {
     fun toDTO() = PlaceSearchHistoryDTO(
         id = id!!,
-        accountId = accountId,
+        accountId = account.id!!,
         keyword = keyword,
         createdAt = createdAt,
     )
+
+    companion object {
+        fun createPlaceSearchHistory(account: Account, keyword: String): PlaceSearchHistory {
+            return PlaceSearchHistory(
+                account = account,
+                keyword = keyword,
+            )
+        }
+    }
 }
 
 @Entity
