@@ -1,7 +1,6 @@
 package com.cococloudy.magnolia.security
 
 import com.cococloudy.magnolia.config.JwtTokenAuthenticationFilter
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -17,13 +16,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import javax.servlet.http.HttpServletResponse
 
 @EnableWebSecurity
-class WebSecurityConfig : WebSecurityConfigurerAdapter() {
-
-    @Autowired
-    private lateinit var jwtConfig: JwtConfig
-
-    @Autowired
-    private lateinit var jwtService: JwtService
+class WebSecurityConfig(
+    private val jwtTokenAuthenticationFilter: JwtTokenAuthenticationFilter
+) : WebSecurityConfigurerAdapter() {
 
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
@@ -38,7 +33,7 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
             .authenticationEntryPoint { _, rsp, _ -> rsp.sendError(HttpServletResponse.SC_UNAUTHORIZED) }
             .and()
             .addFilterBefore(
-                JwtTokenAuthenticationFilter(jwtConfig, jwtService.getJwtParser()),
+                jwtTokenAuthenticationFilter,
                 UsernamePasswordAuthenticationFilter::class.java
             )
             .authorizeRequests()
