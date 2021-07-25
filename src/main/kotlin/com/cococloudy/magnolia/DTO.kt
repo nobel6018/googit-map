@@ -1,6 +1,6 @@
 package com.cococloudy.magnolia
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategy
+import com.fasterxml.jackson.databind.PropertyNamingStrategies
 import com.fasterxml.jackson.databind.annotation.JsonNaming
 import java.time.OffsetDateTime
 
@@ -49,7 +49,7 @@ data class PlaceDTO(
     val placeUrl: String,
 )
 
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy::class)
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy::class)
 data class KakaoLocalApiResponseDTO(
     val documents: List<KakaoPlaceDTO>,
     val meta: KakaoPlaceMeta
