@@ -54,7 +54,7 @@ class Config {
             .security(Collections.singletonList(SecurityRequirement().addList(authorization)))
     }
 
-    fun bearerSecuritySchema(): SecurityScheme {
+    private fun bearerSecuritySchema(): SecurityScheme {
         return SecurityScheme()
             .name(authorization)
             .description("Description about the TOKEN")
