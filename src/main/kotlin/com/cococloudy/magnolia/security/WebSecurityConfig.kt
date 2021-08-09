@@ -15,7 +15,7 @@ import org.springframework.web.cors.CorsUtils
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import javax.servlet.http.HttpServletResponse
 
-@EnableWebSecurity
+//@EnableWebSecurity
 class WebSecurityConfig(
     private val jwtTokenAuthenticationFilter: JwtTokenAuthenticationFilter
 ) : WebSecurityConfigurerAdapter() {
